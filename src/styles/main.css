@@ -1,0 +1,202 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+
+nav {
+  background-color: #0C356A;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+}
+
+nav a,
+.hamburger {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav.active {
+  max-height: 500px; /* Sesuaikan dengan tinggi yang diinginkan */
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.right-section {
+  display: flex;
+}
+
+.right-section a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 16px;
+}
+
+.right-section a:hover {
+  text-decoration: underline;
+}
+
+.hamburger {
+  display: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  min-width: 1000px; 
+}
+
+@media screen and (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    text-align: center;
+  }
+  .right-section {
+    margin-top: 10px; 
+  }
+  .hamburger {
+    margin-top: 10px; 
+  }
+}
+
+/* Media query untuk tampilan mobile pada navbar */
+@media screen and (max-width: 600px) {
+  /* Styles untuk tampilan mobile */
+  .left-section, 
+  .right-section {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .right-section {
+      margin-top: 10px;
+      display: none; /* Menyembunyikan menu pada awalnya */
+  }
+
+  .right-section.active {
+      display: flex; /* Menampilkan menu saat tombol hamburger diklik */
+  }
+
+  .hamburger {
+      display: block;
+  }
+
+  nav.active,
+  #restaurant-list.active {
+      max-height: 500px; /* Sesuaikan dengan tinggi yang diinginkan */
+  }
+
+}
+
+
+@media screen and (max-width: 1200px) {
+  .hero img {
+      min-width: 0; 
+  }
+}
+
+.restaurant-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.restaurant-card {
+  width: 300px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.restaurant-info {
+  margin-top: 10px;
+}
+
+
+@media screen and (max-width: 600px) {
+  .restaurant-card {
+      width: 100%;
+  }
+}
+
+footer {
+  background-color: #0C356A;
+  color: white;
+  text-align: center;
+  padding: 1px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/*"Skip to Content" */
+.skip-link {
+  position: absolute;
+  top: -999em;
+  left: -999em;
+}
+
+/*"Skip to Content" pada fokus */
+.skip-link:focus {
+  position: static;
+  display: block;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  z-index: 9999;
+}
+
+nav,
+  #my-main-content {
+    max-height: 10;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+/* Tampilan desktop */
+@media screen and (min-width: 601px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+/* Tampilan mobile */
+@media screen and (max-width: 600px) {
+  .hamburger {
+    display: block;
+  }
+}
