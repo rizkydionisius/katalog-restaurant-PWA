@@ -1,15 +1,18 @@
+/* eslint-disable no-use-before-define */
 import 'regenerator-runtime'; /* for async await transpile */
 import '../styles/main.css';
+import './detail';
+import './favorit';
 
-document.addEventListener("DOMContentLoaded", async function () {
-  const hamburger = document.querySelector(".hamburger");
-  const menu = document.querySelector(".right-section");
+document.addEventListener('DOMContentLoaded', async () => {
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('.right-section');
 
-  hamburger.addEventListener("click", function () {
-    menu.classList.toggle("active");
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('active');
   });
 
-  window.addEventListener("resize", function () {
+  window.addEventListener('resize', () => {
     adjustHeroImageSize();
   });
 
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const restaurants = await fetchData();
   renderRestaurantList(restaurants);
 
-  window.addEventListener("load", () => {
+  window.addEventListener('load', () => {
     registerServiceWorker();
   });
 });
@@ -35,29 +38,29 @@ async function fetchData() {
 }
 
 function adjustHeroImageSize() {
-  const heroImage = document.querySelector(".hero img");
+  const heroImage = document.querySelector('.hero img');
   const viewportWidth = window.innerWidth;
 
   if (viewportWidth >= 1200) {
-    heroImage.style.minWidth = "1000px";
+    heroImage.style.minWidth = '1000px';
   } else {
-    heroImage.style.minWidth = "0";
+    heroImage.style.minWidth = '0';
   }
 }
 
 function renderRestaurantList(restaurants) {
-    const restaurantListContainer = document.getElementById("my-main-content");
+  const restaurantListContainer = document.getElementById('my-main-content');
 
-    // Loop melalui setiap restoran dan buat elemen card
-    restaurants.forEach(restaurant => {
-        const card = document.createElement("div");
-        card.classList.add("restaurant-card");
+  // Loop melalui setiap restoran dan buat elemen card
+  restaurants.forEach((restaurant) => {
+    const card = document.createElement('div');
+    card.classList.add('restaurant-card');
 
-        // Ganti URL gambar dengan URL dari API
-        const imageUrl = `https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}`;
-        
-        // Menambahkan elemen-elemen ke dalam card 
-        card.innerHTML = `
+    // Ganti URL gambar dengan URL dari API
+    const imageUrl = `https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}`;
+
+    // Menambahkan elemen-elemen ke dalam card
+    card.innerHTML = `
             <img src="${imageUrl}" alt="${restaurant.name}" class="restaurant-image">
             <div class="restaurant-info">
                 <h2>${restaurant.name}</h2>
@@ -68,16 +71,17 @@ function renderRestaurantList(restaurants) {
             </div>
         `;
 
-        // Tambahkan card ke dalam container
-        restaurantListContainer.appendChild(card);
+    // Tambahkan card ke dalam container
+    restaurantListContainer.appendChild(card);
 
-        const detailScript = document.createElement("script");
-        detailScript.setAttribute("type", "module");
-        detailScript.setAttribute("src", "../scripts/detail.js");
-        document.body.appendChild(detailScript);
-    });
+    const detailScript = document.createElement('script');
+    detailScript.setAttribute('type', 'module');
+    detailScript.setAttribute('src', '../scripts/detail.js');
+    document.body.appendChild(detailScript);
+  });
 }
 
+// eslint-disable-next-line no-unused-vars
 function showRestaurantDetail(restaurantId) {
   console.log('Show detail for restaurant with ID:', restaurantId);
   // Implement navigation to detail page or show detail in a modal
@@ -87,10 +91,10 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/service-worker.js')
-      .then(registration => {
+      .then((registration) => {
         console.log('ServiceWorker registered with scope:', registration.scope);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error registering ServiceWorker:', error);
       });
   }

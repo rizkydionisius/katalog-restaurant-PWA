@@ -1,64 +1,81 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable indent */
 import 'regenerator-runtime'; /* for async await transpile */
 import '../styles/detail.css';
+import { createRestaurantDetailTemplate, createLikeButtonTemplate } from '../templates/template-creator';
+import LikeButtonInitiator from '../scripts/like-button-initiator';
+ 
 
-document.addEventListener('DOMContentLoaded', async function () {
-  const restaurantId = getRestaurantIdFromUrl();
-  const restaurant = await fetchRestaurantDetail(restaurantId);
+document.addEventListener('DOMContentLoaded', async () => {
+    const restaurantId = getRestaurantIdFromUrl();
+    const restaurant = await fetchRestaurantDetail(restaurantId);
 
-  if (restaurant) {
-    renderRestaurantDetail(restaurant);
-  } else {
-    console.error('Error fetching restaurant detail.');
-  }
+    if (restaurant) {
+        renderRestaurantDetail(restaurant);
+    } else {
+        console.error('Error fetching restaurant detail.');
+    }
 });
 
 function getRestaurantIdFromUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
 }
 
 async function fetchRestaurantDetail(restaurantId) {
-  try {
-    const response = await fetch(`https://restaurant-api.dicoding.dev/detail/${restaurantId}`);
-    const data = await response.json();
-    return data.restaurant;
-  } catch (error) {
-    console.error('Error fetching restaurant detail:', error);
-    return null;
-  }
+    try {
+        const response = await fetch(`https://restaurant-api.dicoding.dev/detail/${restaurantId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        return data.restaurant;
+    } catch (error) {
+        console.error('Error fetching restaurant detail:', error);
+        return null;
+    }
 }
 
 function renderRestaurantDetail(restaurant) {
-  const detailContainer = document.getElementById('restaurant-detail');
+    // Mengisi informasi detail restoran ke dalam elemen HTML
+    document.getElementById('restaurant-name').innerText = restaurant.name;
+    document.getElementById('restaurant-image').src = `https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}`;
+    document.getElementById('restaurant-address').innerText = `Address: ${restaurant.address}`;
+    document.getElementById('restaurant-city').innerText = `City: ${restaurant.city}`;
+    document.getElementById('restaurant-description').innerText = `Description: ${restaurant.description}`;
 
-  const imageUrl = `https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}`;
+    renderMenuItems('food-menu', restaurant.menus.foods);
+    renderMenuItems('drink-menu', restaurant.menus.drinks);
+    renderCustomerReviews(restaurant.customerReviews);
 
-  // Menambahkan elemen-elemen ke dalam container detail
-  detailContainer.innerHTML = `
-    <img src="${imageUrl}" alt="${restaurant.name}" class="restaurant-image">
-    <div class="restaurant-info">
-        <h2>${restaurant.name}</h2>
-        <p>City: ${restaurant.city}</p>
-        <p>Rating: ${restaurant.rating}</p>
-        <p>Address: ${restaurant.address}</p>
-        <p>Description: ${restaurant.description}</p>
-        <h3>Menu:</h3>
-        <p>Food: ${restaurant.menus.foods.join(', ')}</p>
-        <p>Drinks: ${restaurant.menus.drinks.join(', ')}</p>
-        <h3>Customer Reviews:</h3>
-        <ul id="customer-reviews"></ul>
-    </div>
-  `;
+    // eslint-disable-next-line no-undef
+    LikeButtonInitiator.init({
+        likeButtonContainer: document.querySelector('#likeButtonContainer'),
+        restaurant: {
+            id: movie.id,
+            title: movie.title,
+            overview: movie.overview,
+            backdrop_path: movie.backdrop_path,
+            vote_average: movie.vote_average,
+            },
+        }
+      });
+    }
 
-  renderCustomerReviews(restaurant.customerReviews);
+const likeButtonContainer = document.getElementById('likeButtonContainer');
+    likeButtonContainer.innerHTML = `
+        <div id="likeButtonContainer">
+            <!-- Tempat untuk menampilkan tombol favorit -->
+        </div>
+    `;
+
+function renderMenuItems(listId, items) {
+  const listElement = document.getElementById(listId);
+  listElement.innerHTML = items.map((item) => `<li>${item.name}</li>`).join('');
 }
 
 function renderCustomerReviews(reviews) {
-  const reviewsList = document.getElementById('customer-reviews');
-
-  reviews.forEach(review => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${review.name}: ${review.review}`;
-    reviewsList.appendChild(listItem);
-  });
+    const reviewsList = document.getElementById('customer-reviews');
+    reviewsList.innerHTML = reviews.map((review) => `<li>${review.name}: ${review.review}</li>`).join('');
+// eslint-disable-next-line eol-last
 }
